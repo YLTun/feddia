@@ -1,0 +1,14 @@
+# Training and evaluation outputs
+logs/
+checkpoints/
+
+# Python
+__pycache__/
+*.pyc
+*.egg-info/
+
+# Editors and OS
+.vscode/
+.idea/
+*.swp
+.DS_Store

@@ -1,0 +1,194 @@
+<?xml version="1.0"?>
+<!--
+  Simple differential-drive robot for RL navigation training.
+  - Box body (0.18 x 0.14 x 0.06 m)
+  - Two driven wheels (radius 0.033 m, separation 0.14 m)
+  - One front caster ball (for stability)
+  - Matches JetBot-like dimensions for TurtleBot3-class robots
+-->
+<robot name="diff_drive_robot">
+
+  <!-- ============================================================ -->
+  <!-- BASE LINK (robot body)                                       -->
+  <!-- ============================================================ -->
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <box size="0.18 0.14 0.06" />
+      </geometry>
+      <origin xyz="0 0 0.03" rpy="0 0 0" />
+      <material name="blue">
+        <color rgba="0.2 0.4 0.8 1.0" />
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.18 0.14 0.06" />
+      </geometry>
+      <origin xyz="0 0 0.03" rpy="0 0 0" />
+    </collision>
+    <inertial>
+      <mass value="1.0" />
+      <origin xyz="0 0 0.03" rpy="0 0 0" />
+      <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001" />
+    </inertial>
+  </link>
+
+  <!-- ============================================================ -->
+  <!-- LEFT WHEEL                                                   -->
+  <!-- ============================================================ -->
+  <link name="wheel_left_link">
+    <visual>
+      <geometry>
+        <cylinder radius="0.033" length="0.018" />
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <material name="dark_gray">
+        <color rgba="0.3 0.3 0.3 1.0" />
+      </material>
+    </visual>
+    <!-- Rotation marker stripe -->
+    <visual>
+      <geometry>
+        <box size="0.050 0.005 0.019" />
+      </geometry>
+      <origin xyz="0.025 0 0" rpy="0 0 0" />
+      <material name="yellow">
+        <color rgba="1.0 1.0 0.0 1.0" />
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.033" length="0.018" />
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </collision>
+    <inertial>
+      <mass value="0.05" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <inertia ixx="0.00001" ixy="0" ixz="0" iyy="0.00001" iyz="0" izz="0.00001" />
+    </inertial>
+  </link>
+
+  <joint name="wheel_left_joint" type="continuous">
+    <parent link="base_link" />
+    <child link="wheel_left_link" />
+    <origin xyz="-0.04 0.079 0" rpy="-1.5708 0 0" />
+    <axis xyz="0 0 1" />
+    <dynamics damping="0.01" friction="0.01" />
+  </joint>
+
+  <!-- ============================================================ -->
+  <!-- RIGHT WHEEL                                                  -->
+  <!-- ============================================================ -->
+  <link name="wheel_right_link">
+    <visual>
+      <geometry>
+        <cylinder radius="0.033" length="0.018" />
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <material name="dark_gray">
+        <color rgba="0.3 0.3 0.3 1.0" />
+      </material>
+    </visual>
+    <!-- Rotation marker stripe -->
+    <visual>
+      <geometry>
+        <box size="0.050 0.005 0.019" />
+      </geometry>
+      <origin xyz="0.025 0 0" rpy="0 0 0" />
+      <material name="yellow">
+        <color rgba="1.0 1.0 0.0 1.0" />
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.033" length="0.018" />
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </collision>
+    <inertial>
+      <mass value="0.05" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <inertia ixx="0.00001" ixy="0" ixz="0" iyy="0.00001" iyz="0" izz="0.00001" />
+    </inertial>
+  </link>
+
+  <joint name="wheel_right_joint" type="continuous">
+    <parent link="base_link" />
+    <child link="wheel_right_link" />
+    <origin xyz="-0.04 -0.079 0" rpy="-1.5708 0 0" />
+    <axis xyz="0 0 1" />
+    <dynamics damping="0.01" friction="0.01" />
+  </joint>
+
+  <!-- ============================================================ -->
+  <!-- FRONT CASTER (ball, for stability)                           -->
+  <!-- ============================================================ -->
+  <link name="caster_link">
+    <visual>
+      <geometry>
+        <sphere radius="0.015" />
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <material name="white">
+        <color rgba="0.9 0.9 0.9 1.0" />
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <sphere radius="0.015" />
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </collision>
+    <inertial>
+      <mass value="0.02" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <inertia ixx="0.000001" ixy="0" ixz="0" iyy="0.000001" iyz="0" izz="0.000001" />
+    </inertial>
+  </link>
+
+  <joint name="caster_joint" type="fixed">
+    <parent link="base_link" />
+    <child link="caster_link" />
+    <origin xyz="0.07 0 -0.018" rpy="0 0 0" />
+  </joint>
+
+  <!-- ============================================================ -->
+  <!-- LiDAR SENSOR (Visual representation)                         -->
+  <!-- ============================================================ -->
+  <link name="lidar_link">
+    <visual>
+      <geometry>
+        <cylinder radius="0.02" length="0.02" />
+      </geometry>
+      <!-- Center the cylinder on its own origin -->
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <material name="black">
+        <color rgba="0.1 0.1 0.1 1.0" />
+      </material>
+    </visual>
+    <!-- We omit collision/inertial so it doesn't affect physics, 
+         or we can include lightweight ones. Since merge_fixed_joints=True, 
+         it behaves as part of base_link anyway. -->
+    <collision>
+      <geometry>
+        <cylinder radius="0.02" length="0.02" />
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </collision>
+    <inertial>
+      <mass value="0.01" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <inertia ixx="0.000001" ixy="0" ixz="0" iyy="0.000001" iyz="0" izz="0.000001" />
+    </inertial>
+  </link>
+
+  <joint name="lidar_joint" type="fixed">
+    <parent link="base_link" />
+    <child link="lidar_link" />
+    <!-- Positioned on top of the base_link, shifted slightly forward -->
+    <origin xyz="0.02 0 0.07" rpy="0 0 0" />
+  </joint>
+
+</robot>

@@ -1,0 +1,26 @@
+# Ignore version control
+.git
+.gitignore
+
+# Python artifacts
+__pycache__
+*.pyc
+*.pyo
+*.egg-info
+.eggs
+
+# IDE and editor files
+.vscode
+.idea
+*.swp
+*.swo
+
+# Training outputs (don't bake into image)
+logs/
+runs/
+checkpoints/
+results/
+
+# OS files
+.DS_Store
+Thumbs.db
